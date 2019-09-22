@@ -11,6 +11,7 @@ var grid = [	[0,	0, 0, 0, '1', 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, '2', 0, 0, 0]
 ];
 
+var finalanswer = [];
 var clues = ["Education Hub",
     "Information Technology Hub",
     "Cultural Hub",
@@ -102,29 +103,16 @@ $(".letter").click(function(){
     });
 });
 
-$("#solve").click(function(){
-    if(!$(".letter.active").length)
-        return;
-    var question_numbers = String($(".letter.active").data("number")).split(",");
-    $.each(question_numbers,function(){
-        fillAnswer(this);
-    });
-});
-
-$("#clear_all").click(function(){
-    if(!$(".letter.active").length)
-        return;
-    var question_numbers = String($(".letter.active").data("number")).split(",");
-    $.each(question_numbers,function(){
-        clearAnswer(this);
-    });
-});
-
 $("#check").click(function(){
+    var answer = [];
     $("#puzzle td div").css("color","initial");
     for(var i = 0;i < answers.length;i++){
-        checkAnswer(i+1);
+        answer.push(checkAnswer(i+1));
     }
+    console.log("Anwers....");
+    console.log(answer);
+    finalanswer = answer;
+
 });
 
 $("#clue").click(function(){
@@ -172,28 +160,6 @@ function get_startpos(question_number,direction){
     }
 }
 
-function fillAnswer(question_number){
-    $("#puzzle td div").css("color","initial");
-
-    var question_answer = answers[question_number-1];
-    var direction = get_direction(question_number);
-    var startpos = get_startpos(question_number,direction);
-    var answer_letters = question_answer.split("");
-
-    if(direction == "horizontal"){
-        for(var i = 0; i < answer_letters.length; i++){
-            $("#puzzle tr:nth-child("+(startpos[0]+1)+") td:nth-child("+(startpos[1]+1+i)+") div").text(answer_letters[i]);
-        }
-
-    }
-    else if(direction == "vertical"){
-        for(var i = 0; i < answer_letters.length; i++){
-            $("#puzzle tr:nth-child("+(startpos[1]+1+i)+") td:nth-child("+(startpos[0]+1)+") div").text(answer_letters[i]);
-        }
-
-    }
-}
-
 function clearAnswer(question_number){
     $("#puzzle td div").css("color","initial");
 
@@ -221,9 +187,11 @@ function checkAnswer(question_number){
     var direction = get_direction(question_number);
     var startpos = get_startpos(question_number,direction);
     var answer_letters = question_answer.split("");
+    var answer = '';
 
     if(direction == "horizontal"){
         for(var i = 0; i < answer_letters.length; i++){
+            answer += $("#puzzle tr:nth-child("+(startpos[0]+1)+") td:nth-child("+(startpos[1]+1+i)+") div").text();
             if($("#puzzle tr:nth-child("+(startpos[0]+1)+") td:nth-child("+(startpos[1]+1+i)+") div").text() != question_answer[i] && $("#puzzle tr:nth-child("+(startpos[0]+1)+") td:nth-child("+(startpos[1]+1+i)+") div").text() != ""){
                 $("#puzzle tr:nth-child("+(startpos[0]+1)+") td:nth-child("+(startpos[1]+1+i)+") div").css("color","red");
             }
@@ -232,12 +200,14 @@ function checkAnswer(question_number){
     }
     else if(direction == "vertical"){
         for(var i = 0; i < answer_letters.length; i++){
+            answer +=$("#puzzle tr:nth-child("+(startpos[1]+1+i)+") td:nth-child("+(startpos[0]+1)+") div").text();
             if($("#puzzle tr:nth-child("+(startpos[1]+1+i)+") td:nth-child("+(startpos[0]+1)+") div").text() != question_answer[i] && $("#puzzle tr:nth-child("+(startpos[1]+1+i)+") td:nth-child("+(startpos[0]+1)+") div").text() != ""){
                 $("#puzzle tr:nth-child("+(startpos[1]+1+i)+") td:nth-child("+(startpos[0]+1)+") div").css("color","red");
             }
         }
 
     }
+    return answer;
 }
 
 function showClue(question_number,i,j){
@@ -253,34 +223,3 @@ function showClue(question_number,i,j){
         $("#puzzle tr:nth-child("+(j+1)+") td:nth-child("+(i+1)+") div").text(answer_letters[j - startpos[1]]).css("color","initial");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
