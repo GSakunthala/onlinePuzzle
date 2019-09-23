@@ -22,10 +22,8 @@
 </div>
 
 <div id="hints_container">
-    <h3>Vertical</h3>
-    <div id="vertical_hints_container"></div>
-    <h3>Horizontal</h3>
-    <div id="horizontal_hints_container"></div>
+    <div id="horizontal_hints_container"><h3>Across</h3></div>
+    <div id="vertical_hints_container"><h3>Down</h3></div>
 </div>
 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -65,8 +63,8 @@
     </div>
 </div>
 
-<div class="text-center">
-    <a href="" id="check" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Submit</a>
+<div class="text-center submit">
+    <a href="" id="check" class="btn btn-default btn-rounded mb-4 btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#modalLoginForm">Submit</a>
 </div>
 </body>
 <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
@@ -97,11 +95,9 @@
             success: function(strMessage) {
                 //alert(strMessage);
                 $("#message").text(strMessage);
-               // $("#my-form")[0].reset();
             },
             error: function (error) {
                 $("#message").text(error);
-               // alert(error);
             }
         });
     }
